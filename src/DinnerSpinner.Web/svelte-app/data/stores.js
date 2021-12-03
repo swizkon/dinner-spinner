@@ -1,14 +1,19 @@
-import { writable } from "svelte/store";
+import { writable, derived } from 'svelte/store'
 
-// Pattern sample: persistent store, backed by localStorage
-/*
-const storedValue = localStorage.getItem("testValue");
-export const valueStore = writable(storedValue);
-valueStore.subscribe(value => {
-    localStorage.setItem("testValue", value || "defaultValue");
-});
-*/
+/** Store for your data. 
+This assumes the data you're pulling back will be an array.
+If it's going to be an object, default this to an empty object.
+**/
+export const apiData = writable([])
 
-// Needed for api.js
-// export const authToken = writable(token);
-// export const baseUrl = writable(window.location.protocol + "//" + window.location.host + "/api");
+/** Data transformation.
+For our use case, we only care about the drink names, not the other information.
+Here, we'll create a derived store to hold the drink names.
+**/
+export const spinners = derived(apiData, ($apiData) => {
+  console.log($apiData)
+  if ($apiData) {
+    return $apiData
+  }
+  return []
+})

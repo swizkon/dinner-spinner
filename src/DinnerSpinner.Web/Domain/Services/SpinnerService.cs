@@ -57,12 +57,17 @@ namespace DinnerSpinner.Web.Domain.Services
             }
         }
 
-        public Task UpdateAsync(string id, Spinner spinnerIn) => _spinners.ReplaceOneAsync(spinner => spinner.Id == id, spinnerIn);
+        public Task UpdateAsync(string id, Spinner spinnerIn)
+        {
+            // spinnerIn.Version
+            // Do a concurrency check?
+            return _spinners.ReplaceOneAsync(spinner => spinner.Id == id, spinnerIn);
+        }
 
         public async Task<Spinner> Remove(string id)
         {
             var spinner = await Get(id);
-            if ((await _spinners.DeleteOneAsync(spinner => spinner.Id == id)).IsAcknowledged)
+            if ((await _spinners.DeleteOneAsync(s => s.Id == id)).IsAcknowledged)
             {
                 return spinner;
             }
