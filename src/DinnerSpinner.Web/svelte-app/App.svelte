@@ -33,7 +33,7 @@ export let name;
 	<h1>Hello {name}!</h1>
 	<h2>Spinners:</h2>
 	{#each $spinners as spinner}
-		<SpinnerItem name={spinner.name} id={spinner.id} on:delete={handleDelete} />
+		<SpinnerItem spinner={spinner} name={spinner.name} id={spinner.id} on:delete={handleDelete} />
 	{/each}
 	
 	<hr/>
