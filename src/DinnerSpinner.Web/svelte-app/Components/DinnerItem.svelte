@@ -2,13 +2,11 @@
 import { onMount } from "svelte";
 import { createEventDispatcher } from 'svelte';
 
-import { Router, Link, Route } from "svelte-routing";
-
 const dispatch = createEventDispatcher();
 
 function deleteMe() {
 	dispatch('delete', {
-		spinnerId: id
+		dinnerId: dinner.id
 	});
 }
 	
@@ -21,7 +19,6 @@ export let dinner;
 
 <div>
 	<h2>{dinner.name}</h2>
-	
 	
 	<button on:click={deleteMe}>
 		Delete
