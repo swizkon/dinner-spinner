@@ -6,29 +6,29 @@
   function handleUpsert(event) {
     const payload = {
       name: name,
-      ownerEmail: "jonas@example.com",
-      ownerName: "jonas",
+      ingredients: []
     };
 
-    return fetch("/api/spinner", {
+    return fetch(`/api/spinner/${id}/dinners`, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: { "content-type": "application/json" },
     })
       .then((response) => response.json())
-      .then((s) => {
+      .then((d) => {
         dispatch("append", {
-          spinner: s,
+          spinner: d,
         });
       });
   }
 
-  let name;
+  export let name;
   export let id;
 </script>
 
 <div>
   <h1>{name} <small>({id})</small></h1>
   <input bind:value={name} />
+  <textarea></textarea>
   <button on:click={handleUpsert}>Save</button>
 </div>
