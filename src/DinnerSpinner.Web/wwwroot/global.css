@@ -1,12 +1,21 @@
 
 
-@import url(https://fonts.googleapis.com/css?family=Bangers);
+	@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&display=swap');
+
 
 html, body {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	font-size: large;
 }
+
+
+@media (max-width: 640px) {
+    html, body {
+		font-size:90%;
+    }
+  }
 
 body {
 	color: #333;
@@ -15,12 +24,38 @@ body {
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	/*font-family: 'Bangers';*/
-    background-color: #ddd;
+    background-color: #fff;
 }
 
-h1, h2 {
+h1 {
+	color: #000;
+	text-transform: uppercase;
+	font-size: 4em;
+	font-weight: 100;
     font-family: 'Bangers';
-	text-shadow: 0em 0em 0.2em #fff;
+	text-shadow: 0em 0em 0.8em #fff;
+}
+h1 {
+    /* border:solid 2px #000; */
+    text-shadow: 4px 4px #333;
+}
+
+h1 {
+	font-size: 4em;
+	font-weight: 100;
+	color: #FF3E00;
+	-webkit-text-fill-color: white; /* Will override color (regardless of order) */
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #000;
+}
+
+h2 {
+	color: #ff3e00;
+	text-transform: uppercase;
+	font-size: 2em;
+	font-weight: 100;
+    font-family: 'Bangers';
+	text-shadow: 0em 0em 0.8em #fff;
 }
 
 a {

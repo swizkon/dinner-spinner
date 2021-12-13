@@ -1,22 +1,22 @@
 <script>
-	import { onMount } from "svelte";
-	import { createEventDispatcher } from 'svelte';
+import { onMount } from "svelte";
+import { createEventDispatcher } from 'svelte';
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	function deleteMe() {
-		dispatch('delete', {
-			spinnerId: id
-		});
-	}
+function deleteMe() {
+	dispatch('delete', {
+		spinnerId: id
+	});
+}
 	
 onMount(async () => {
   console.log('spinner', spinner)
 });
 
-	export let name;
-	export let id;
-	export let spinner;
+export let name;
+export let id;
+export let spinner;
 </script>
 
 <div>

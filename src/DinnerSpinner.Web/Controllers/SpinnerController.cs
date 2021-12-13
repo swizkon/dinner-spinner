@@ -43,7 +43,7 @@ namespace DinnerSpinner.Api.Controllers
             _logger.LogInformation("Create {@Spinner}", spinner);
             var result = await _spinnerService.Create(spinner);
 
-            return CreatedAtRoute("GetSpinner", new { id = result.Id }, spinner);
+            return CreatedAtRoute("GetSpinner", new { id = result.Id }, result);
         }
 
         [HttpPost("{spinnerId}/dinners")]
