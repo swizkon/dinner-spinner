@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using DinnerSpinner.Api.Domain.Contracts;
-using DinnerSpinner.Api.Domain.Models;
+using DinnerSpinner.Web.Configuration;
 using DinnerSpinner.Web.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -29,7 +29,7 @@ Logging:
 
 DatabaseSettings:
   ConnectionString: "mongodb://root:example@localhost:27017"
-  DatabaseName: "SpinnerDb"
+  DatabaseName: "dinner-spinner-development"
 
 ConnectionStrings:
   MongoDb: "mongodb://root:example@localhost:27017"

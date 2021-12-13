@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DinnerSpinner.Api.Configuration;
 using DinnerSpinner.Api.Domain.Contracts;
 using DinnerSpinner.Api.Domain.Models;
+using DinnerSpinner.Web.Configuration;
 using MongoDB.Driver;
 
 namespace DinnerSpinner.Web.Domain.Services

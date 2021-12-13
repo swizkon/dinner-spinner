@@ -1,4 +1,4 @@
-﻿namespace DinnerSpinner.Api.Configuration
+﻿namespace DinnerSpinner.Web.Configuration
 {
     public class DatabaseSettings : IDatabaseSettings
     {
