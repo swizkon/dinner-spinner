@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,9 @@ namespace DinnerSpinner.Api
                     var env = hostingContext.HostingEnvironment;
                     config.AddYamlFile("AppSettings.yml", optional: true, reloadOnChange: true);
                     config.AddYamlFile($"AppSettings.{env.EnvironmentName}.yml", optional: true, reloadOnChange: true);
+                     
+                    if (env.IsDevelopment())
+                        config.AddUserSecrets<Startup>();
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }

@@ -1,14 +1,7 @@
 <script>
-  import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
-
-  function deleteMe() {
-    dispatch("delete", {
-      spinnerId: id,
-    });
-  }
 
   function handleUpsert(event) {
     const payload = {
@@ -29,10 +22,6 @@
         });
       });
   }
-
-  onMount(async () => {
-    console.log("spinner", spinner);
-  });
 
   export let name;
   export let id;

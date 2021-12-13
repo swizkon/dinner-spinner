@@ -1,9 +1,11 @@
 <script>
   import { onMount } from "svelte";
   import { apiData, spinners } from "./data/stores.js";
+  import { Router, Link, Route } from "svelte-routing";
 
-  import SpinnerItem from "./Components/SpinnerItem.svelte";
-  import SpinnerForm from "./Components/SpinnerForm.svelte";
+  import SpinnerList from "./Components/SpinnerList.svelte";
+
+  import SpinnerDetails from "./Components/SpinnerDetails.svelte";
 
   onMount(async () => {
     fetch("/api/spinner")
@@ -33,22 +35,24 @@
   }
 
   export let name;
+  export let url = "";
 </script>
 
 <main>
   <h1>Hello {name}!</h1>
-  <h2>Spinners:</h2>
-  {#each $spinners as spinner}
-    <SpinnerItem
-      {spinner}
-      name={spinner.name}
-      id={spinner.id}
-      on:delete={handleDelete}
-    />
-  {/each}
 
-  <hr />
-  <SpinnerForm on:append={handleAppend} />
+  <Router {url}>
+    <nav>
+      <Link to="/">Home</Link>
+    </nav>
+    <div>
+      <Route path="spinner/:id" let:params>
+        <SpinnerDetails id={params.id} />
+      </Route>
+      <!-- <Route path="spinner/:id" component={SpinnerDetails} /> -->
+      <Route path="/" component={SpinnerList} />
+    </div>
+  </Router>
 </main>
 
 <style>
@@ -57,7 +61,7 @@
     padding: 1em;
     max-width: 240px;
     margin: 0 auto;
-  }  
+  }
   /*
   h1 {
     color: #ff3e00;
