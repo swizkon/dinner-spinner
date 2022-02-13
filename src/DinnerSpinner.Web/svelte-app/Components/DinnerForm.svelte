@@ -1,33 +1,35 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from "svelte";
 
-  const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
-  function handleUpsert(event) {
-    const payload = {
-      name: name,
-      ingredients: []
-    };
+	function handleUpsert(event) {
+	const payload = {
+	name: name,
+	ingredients: []
+	};
 
-    return fetch(`/api/spinner/${id}/dinners`, {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: { "content-type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((d) => {
-        dispatch("append", {
-          spinner: d,
-        });
-      });
-  }
+	return fetch(`/api/spinner/${id}/dinners`, {
+	method: "POST",
+	body: JSON.stringify(payload),
+	headers: { "content-type": "application/json" },
+	})
+	.then((response) => response.json())
+	.then((d) => {
+	dispatch("append", {
+	spinner: d,
+	});
+	});
+	}
 
-  export let name;
-  export let id;
+	export let name;
+	export let id;
+
+	$: displayName = name || 'Add a new option'
 </script>
 
 <div>
-  <h1>{name} <small>({id})</small></h1>
+  <h1>{displayName} <small>({id})</small></h1>
   <input bind:value={name} />
   <textarea></textarea>
   <button on:click={handleUpsert}>Save</button>
