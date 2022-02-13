@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DinnerSpinner.Api.Domain.Contracts;
 using DinnerSpinner.Api.Domain.Models;
@@ -75,9 +76,21 @@ namespace DinnerSpinner.Web.Domain.Services
             return default;
         }
 
-        public async Task<Spinner> AddDinner(string spinnerId, Dinner dinner)
+        public async Task<Spinner> AddDinner(string spinnerId, string name, List<string> ingredients)
         {
             var spinner = await Get(spinnerId);
+
+            var dinner = new Dinner
+            {
+                Name = name,
+                Id = Guid.NewGuid(),
+                Ingredients = ingredients.Select(i => new Ingredient(i)).ToList(),
+                SpinnerRef = new SpinnerRef
+                {
+                    Id = spinner.Id,
+                    Name = spinner.Name
+                }
+            };
 
             spinner.Dinners.Add(dinner);
 

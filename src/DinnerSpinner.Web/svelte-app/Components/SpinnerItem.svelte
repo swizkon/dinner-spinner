@@ -23,9 +23,9 @@ export let spinner;
 
 <div>
 	<hr/>
-	<h1>{name} <small>({id})</small></h1>
-	<Link to="/spinner/{id}">Details</Link>
-	<button on:click={deleteMe}>
-		Delete
-	</button>
+	<h1 data-id="{id}">{name}</h1>
+	<Link to="/spinner/{id}">Goto the menu...</Link>
+	<!--<button on:click={deleteMe}>
+		Deletesdfsdf
+	</button>-->
 </div>

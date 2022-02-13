@@ -1,4 +1,6 @@
-﻿namespace DinnerSpinner.Api.Domain.Contracts
+﻿using System.Collections.Generic;
+
+namespace DinnerSpinner.Api.Domain.Contracts
 {
     public class AddDinner
     {
@@ -6,6 +8,6 @@
 
         public string Name { get; set; }
 
-        public string[] Ingredients { get; set; }
+        public List<string> Ingredients { get; set; }
     }
 }

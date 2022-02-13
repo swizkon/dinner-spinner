@@ -47,12 +47,20 @@ namespace DinnerSpinner.Api.Controllers
         }
 
         [HttpPost("{spinnerId}/dinners")]
-        public async Task<IActionResult> AddDinner([FromRoute] string spinnerId, [FromBody] Dinner dinner)
+        public async Task<IActionResult> AddDinner([FromRoute] string spinnerId, [FromBody] AddDinner dinner)
         {
             _logger.LogInformation("AddDinner {@Dinner}", dinner);
-            var spinner = await _spinnerService.AddDinner(spinnerId, dinner);
+            var spinner = await _spinnerService.AddDinner(spinnerId, dinner.Name, dinner.Ingredients);
 
             return CreatedAtRoute("GetSpinner", new { id = spinnerId }, spinner);
+        }
+
+        [HttpDelete("{spinnerId:length(24)}/dinners/{dinnerId}")]
+        public async Task<Spinner> DeleteDinner(string spinnerId, string dinnerId)
+        {
+            var spinner = await _spinnerService.Remove(spinnerId);
+
+            return spinner;
         }
 
         [HttpDelete("{spinnerId:length(24)}")]
