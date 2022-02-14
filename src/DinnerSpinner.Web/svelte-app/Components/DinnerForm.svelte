@@ -24,7 +24,7 @@
 
   export let name;
   export let id;
-  let ingredients;
+  let ingredients = "";
 
   $: displayName = name || "Add a new dinner";
 </script>
