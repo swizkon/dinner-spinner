@@ -6,7 +6,7 @@
   function handleUpsert(event) {
     const payload = {
       name: name,
-      ingredients: ingredients.split('\n'),
+      ingredients: ingredients.split("\n"),
     };
 
     return fetch(`/api/spinner/${id}/dinners`, {
@@ -30,7 +30,7 @@
 </script>
 
 <div>
-  <h1>{displayName} <small>({id})</small></h1>
+  <h1>{displayName}</h1>
   <input bind:value={name} />
   <textarea bind:value={ingredients} />
   <button on:click={handleUpsert}>Save</button>

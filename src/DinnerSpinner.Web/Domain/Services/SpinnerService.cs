@@ -98,5 +98,17 @@ namespace DinnerSpinner.Web.Domain.Services
 
             return spinner;
         }
+
+        public async Task<Spinner> RemoveDinner(string spinnerId, Guid dinnerId)
+        {
+            var spinner = await Get(spinnerId);
+
+            spinner.Dinners = spinner.Dinners.Where(d => d.Id != dinnerId).ToList();
+                // .Add(dinner);
+
+            await UpdateAsync(spinner.Id, spinner);
+
+            return spinner;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DinnerSpinner.Api.Domain.Contracts;
 using DinnerSpinner.Api.Domain.Models;
@@ -56,9 +57,9 @@ namespace DinnerSpinner.Api.Controllers
         }
 
         [HttpDelete("{spinnerId:length(24)}/dinners/{dinnerId}")]
-        public async Task<Spinner> DeleteDinner(string spinnerId, string dinnerId)
+        public async Task<Spinner> DeleteDinner(string spinnerId, Guid dinnerId)
         {
-            var spinner = await _spinnerService.Remove(spinnerId);
+            var spinner = await _spinnerService.RemoveDinner(spinnerId, dinnerId);
 
             return spinner;
         }

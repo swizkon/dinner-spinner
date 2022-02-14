@@ -1,26 +1,24 @@
 <script>
-import { onMount } from "svelte";
-import { createEventDispatcher } from 'svelte';
+  import { onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
 
-const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher();
 
-function deleteMe() {
-	dispatch('delete', {
-		dinnerId: dinner.id
-	});
-}
-	
-onMount(async () => {
-  console.log('dinner', dinner)
-});
+  function deleteMe() {
+    console.log("dinner item deleteMe", dinner);
+    dispatch("delete", {
+      dinnerId: dinner.id,
+    });
+  }
 
-export let dinner;
+  onMount(async () => {
+    console.log("dinner item", dinner);
+  });
+
+  export let dinner;
 </script>
 
 <div>
-	<h2>{dinner.name}</h2>
-	
-	<button on:click={deleteMe}>
-		Delete
-	</button>
+  <h2>{dinner.name}</h2>
+  <button on:click={deleteMe}> Delete </button>
 </div>

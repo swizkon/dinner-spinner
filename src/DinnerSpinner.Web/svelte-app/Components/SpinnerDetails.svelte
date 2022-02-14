@@ -1,36 +1,43 @@
 <script>
-	import { onMount } from "svelte";
-	import { createEventDispatcher } from "svelte";
+  import { onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
 
-	import DinnerItem from "./DinnerItem.svelte";
-	import DinnerForm from "./DinnerForm.svelte";
+  import DinnerItem from "./DinnerItem.svelte";
+  import DinnerForm from "./DinnerForm.svelte";
 
-	const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher();
 
-	function getDetails() {
-	return fetch(`/api/spinner/${id}`)
-	.then((response) => response.json())
-	.then((s) => {
-	spinner = s;
-	});
-	}
+  function getDetails() {
+    return fetch(`/api/spinner/${id}`)
+      .then((response) => response.json())
+      .then((s) => {
+        spinner = s;
+      });
+  }
 
-	onMount(async () => {
-	await getDetails();
-	});
+  onMount(async () => {
+    await getDetails();
+  });
 
-	function handleAppend(event) {
-	console.log("event", event);
-	spinner = event.detail.spinner;
-	}
+  function handleAppend(event) {
+    console.log("event", event);
+    spinner = event.detail.spinner;
+  }
 
-	function handleDelete(event) {
-		console.log("handleDelete", event);
-		// spinner = event.detail.spinner;
-	}
+  function handleDelete(event) {
+    console.log("handleDelete", event);
+    return fetch(`/api/spinner/${id}/dinners/${event.detail.dinnerId}`, {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((d) => {
+        spinner = d;
+      });
+  }
 
-	let spinner = null;
-	$: title = (spinner && spinner.name) || "Loading...";
+  let spinner = null;
+  $: title = (spinner && spinner.name) || "Loading...";
   $: dinners = (spinner && spinner.dinners) || [];
 
   export let id;
@@ -41,10 +48,7 @@
   <hr />
 
   {#each dinners as dinner}
-    <DinnerItem
-      {dinner}
-      on:delete={handleDelete}
-    />
+    <DinnerItem {dinner} on:delete={handleDelete} />
   {/each}
 
   <hr />
