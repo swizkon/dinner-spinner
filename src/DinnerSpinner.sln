@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinnerSpinner.Web", "DinnerSpinner.Web\DinnerSpinner.Web.csproj", "{70A16123-4282-4D02-96F8-28ED0B56AAA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinnerSpinner.Domain", "DinnerSpinner.Domain\DinnerSpinner.Domain.csproj", "{EF93ADF1-F0C1-468B-9671-C8730C6B1EDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinnerSpinner.Infrastructure", "DinnerSpinner.Infrastructure\DinnerSpinner.Infrastructure.csproj", "{17992A56-DB28-44D5-9C3D-DE7F391B8195}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{70A16123-4282-4D02-96F8-28ED0B56AAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70A16123-4282-4D02-96F8-28ED0B56AAA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70A16123-4282-4D02-96F8-28ED0B56AAA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF93ADF1-F0C1-468B-9671-C8730C6B1EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF93ADF1-F0C1-468B-9671-C8730C6B1EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF93ADF1-F0C1-468B-9671-C8730C6B1EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF93ADF1-F0C1-468B-9671-C8730C6B1EDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17992A56-DB28-44D5-9C3D-DE7F391B8195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17992A56-DB28-44D5-9C3D-DE7F391B8195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17992A56-DB28-44D5-9C3D-DE7F391B8195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17992A56-DB28-44D5-9C3D-DE7F391B8195}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

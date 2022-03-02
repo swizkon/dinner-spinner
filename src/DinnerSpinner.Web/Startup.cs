@@ -1,3 +1,4 @@
+using DinnerSpinner.Infrastructure;
 using DinnerSpinner.Web.Configuration;
 using DinnerSpinner.Web.Domain.Services;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,8 @@ namespace DinnerSpinner.Api
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
             services.AddSingleton<SpinnerService>();
+
+            services.AddMongoDbConfiguration();
 
             services.AddSwaggerDocumentation();
 

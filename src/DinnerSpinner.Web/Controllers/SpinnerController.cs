@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DinnerSpinner.Api.Domain.Contracts;
-using DinnerSpinner.Api.Domain.Models;
+using DinnerSpinner.Domain.Model;
 using DinnerSpinner.Web.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

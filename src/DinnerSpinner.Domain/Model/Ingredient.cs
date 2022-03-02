@@ -1,4 +1,4 @@
-namespace DinnerSpinner.Api.Domain.Models
+namespace DinnerSpinner.Domain.Model
 {
     public class Ingredient
     {

@@ -29,6 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DinnerSpinner.Domain\DinnerSpinner.Domain.csproj" />
+    <ProjectReference Include="..\DinnerSpinner.Infrastructure\DinnerSpinner.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.Development.yml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

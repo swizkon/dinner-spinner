@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace DinnerSpinner.Api.Domain.Models
+namespace DinnerSpinner.Domain.Model
 {
-    [BsonIgnoreExtraElements]
     public class Dinner
     {
-        [BsonElement("Name")]
         public string Name { get; set; }
 
         public Guid Id { get; set; }

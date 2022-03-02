@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DinnerSpinner.Api.Domain.Contracts;
-using DinnerSpinner.Api.Domain.Models;
+using DinnerSpinner.Domain.Model;
 using DinnerSpinner.Web.Configuration;
 using MongoDB.Driver;
 
@@ -35,6 +35,7 @@ namespace DinnerSpinner.Web.Domain.Services
             {
                 var spinner = new Spinner
                 {
+                    Id = MongoDB.Bson.ObjectId.GenerateNewId(DateTime.UtcNow).ToString(),
                     Name = createSpinner.Name,
                     Version = 1,
                     Members = new List<UserRef>
