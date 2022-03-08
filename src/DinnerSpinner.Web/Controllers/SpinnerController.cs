@@ -25,8 +25,8 @@ namespace DinnerSpinner.Api.Controllers
         [HttpGet]
         public async Task<List<Spinner>> Get() => await _spinnerService.Get();
 
-        [HttpGet("{id:length(24)}", Name = "GetSpinner")]
-        public async Task<IActionResult> Get(string id)
+        [HttpGet("{id}", Name = "GetSpinner")]
+        public async Task<IActionResult> Get(Guid id)
         {
             var spinner = await _spinnerService.Get(id);
 
@@ -48,7 +48,7 @@ namespace DinnerSpinner.Api.Controllers
         }
 
         [HttpPost("{spinnerId}/dinners")]
-        public async Task<IActionResult> AddDinner([FromRoute] string spinnerId, [FromBody] AddDinner dinner)
+        public async Task<IActionResult> AddDinner([FromRoute] Guid spinnerId, [FromBody] AddDinner dinner)
         {
             _logger.LogInformation("AddDinner {@Dinner}", dinner);
             var spinner = await _spinnerService.AddDinner(spinnerId, dinner.Name, dinner.Ingredients);
@@ -56,16 +56,16 @@ namespace DinnerSpinner.Api.Controllers
             return CreatedAtRoute("GetSpinner", new { id = spinnerId }, spinner);
         }
 
-        [HttpDelete("{spinnerId:length(24)}/dinners/{dinnerId}")]
-        public async Task<Spinner> DeleteDinner(string spinnerId, Guid dinnerId)
+        [HttpDelete("{spinnerId}/dinners/{dinnerId}")]
+        public async Task<Spinner> DeleteDinner(Guid spinnerId, Guid dinnerId)
         {
             var spinner = await _spinnerService.RemoveDinner(spinnerId, dinnerId);
 
             return spinner;
         }
 
-        [HttpDelete("{spinnerId:length(24)}")]
-        public async Task<Spinner> DeleteSpinner(string spinnerId)
+        [HttpDelete("{spinnerId}")]
+        public async Task<Spinner> DeleteSpinner(Guid spinnerId)
         {
             var spinner = await _spinnerService.Remove(spinnerId);
 

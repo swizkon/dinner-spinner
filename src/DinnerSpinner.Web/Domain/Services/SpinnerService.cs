@@ -24,7 +24,7 @@ namespace DinnerSpinner.Web.Domain.Services
         public async Task< List<Spinner>> Get()
             => await _spinners.Find(spinner => true).ToListAsync();
 
-        public async Task<Spinner> Get(string id) 
+        public async Task<Spinner> Get(Guid id) 
             => await _spinners.Find<Spinner>(spinner => spinner.Id == id).FirstOrDefaultAsync();
 
         public async Task<Spinner> Create(CreateSpinner createSpinner)
@@ -35,7 +35,7 @@ namespace DinnerSpinner.Web.Domain.Services
             {
                 var spinner = new Spinner
                 {
-                    Id = MongoDB.Bson.ObjectId.GenerateNewId(DateTime.UtcNow).ToString(),
+                    Id = Guid.NewGuid(), // MongoDB.Bson.ObjectId.GenerateNewId(DateTime.UtcNow).ToString(),
                     Name = createSpinner.Name,
                     Version = 1,
                     Members = new List<UserRef>
@@ -59,14 +59,14 @@ namespace DinnerSpinner.Web.Domain.Services
             }
         }
 
-        public Task UpdateAsync(string id, Spinner spinnerIn)
+        public Task UpdateAsync(Guid id, Spinner spinnerIn)
         {
             // spinnerIn.Version
             // Do a concurrency check?
             return _spinners.ReplaceOneAsync(spinner => spinner.Id == id, spinnerIn);
         }
 
-        public async Task<Spinner> Remove(string id)
+        public async Task<Spinner> Remove(Guid id)
         {
             var spinner = await Get(id);
             if ((await _spinners.DeleteOneAsync(s => s.Id == id)).IsAcknowledged)
@@ -77,7 +77,7 @@ namespace DinnerSpinner.Web.Domain.Services
             return default;
         }
 
-        public async Task<Spinner> AddDinner(string spinnerId, string name, List<string> ingredients)
+        public async Task<Spinner> AddDinner(Guid spinnerId, string name, List<string> ingredients)
         {
             var spinner = await Get(spinnerId);
 
@@ -100,7 +100,7 @@ namespace DinnerSpinner.Web.Domain.Services
             return spinner;
         }
 
-        public async Task<Spinner> RemoveDinner(string spinnerId, Guid dinnerId)
+        public async Task<Spinner> RemoveDinner(Guid spinnerId, Guid dinnerId)
         {
             var spinner = await Get(spinnerId);
 

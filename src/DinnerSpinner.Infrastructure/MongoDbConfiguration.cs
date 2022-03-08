@@ -1,9 +1,10 @@
 ﻿using MongoDB.Bson.Serialization.Conventions;
-using System;
 using MongoDB.Bson.Serialization;
 using DinnerSpinner.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace DinnerSpinner.Infrastructure
 {
@@ -11,9 +12,16 @@ namespace DinnerSpinner.Infrastructure
     {
         public static IServiceCollection AddMongoDbConfiguration(this IServiceCollection services)
         {
-            var conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
-            ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
-            
+            var conventionPack = new ConventionPack
+                {
+                    new EnumRepresentationConvention(BsonType.String),
+                    new CamelCaseElementNameConvention(),
+                    new IgnoreExtraElementsConvention(true)
+                };
+            ConventionRegistry.Register("DinnerSpinnerConventions", conventionPack, type => true);
+
+            BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+
             BsonClassMap.RegisterClassMap<Spinner>(cm =>
             {
                 cm.AutoMap();

@@ -5,7 +5,7 @@ namespace DinnerSpinner.Domain.Model
 {
     public class Spinner
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public int Version { get; set; } = 1;
 
