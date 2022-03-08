@@ -4,8 +4,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import replace from '@rollup/plugin-replace';
 
-const production = !process.env.ROLLUP_WATCH;
+const production = !!!process.env.ROLLUP_WATCH;
 
 function serve() {
 	let server;
@@ -37,6 +38,9 @@ export default {
 		file: 'wwwroot/build/bundle.js'
 	},
 	plugins: [
+        replace({
+            ENVIRONMENT: !production ? JSON.stringify('dev') : JSON.stringify('production')
+        }),
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production

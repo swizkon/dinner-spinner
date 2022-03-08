@@ -7,69 +7,68 @@ using DinnerSpinner.Web.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace DinnerSpinner.Api.Controllers
+namespace DinnerSpinner.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class SpinnerController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class SpinnerController : ControllerBase
+    private readonly SpinnerService _spinnerService;
+    private readonly ILogger<SpinnerController> _logger;
+
+    public SpinnerController(SpinnerService spinnerService, ILogger<SpinnerController> logger)
     {
-        private readonly SpinnerService _spinnerService;
-        private readonly ILogger<SpinnerController> _logger;
+        _spinnerService = spinnerService;
+        _logger = logger;
+    }
 
-        public SpinnerController(SpinnerService spinnerService, ILogger<SpinnerController> logger)
+    [HttpGet]
+    public async Task<List<Spinner>> Get() => await _spinnerService.Get();
+
+    [HttpGet("{id}", Name = "GetSpinner")]
+    public async Task<IActionResult> Get(Guid id)
+    {
+        var spinner = await _spinnerService.Get(id);
+
+        if (spinner == null)
         {
-            _spinnerService = spinnerService;
-            _logger = logger;
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<List<Spinner>> Get() => await _spinnerService.Get();
+        return Ok(spinner);
+    }
 
-        [HttpGet("{id}", Name = "GetSpinner")]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            var spinner = await _spinnerService.Get(id);
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody]CreateSpinner spinner)
+    {
+        _logger.LogInformation("Create {@Spinner}", spinner);
+        var result = await _spinnerService.Create(spinner);
 
-            if (spinner == null)
-            {
-                return NotFound();
-            }
+        return CreatedAtRoute("GetSpinner", new { id = result.Id }, result);
+    }
 
-            return Ok(spinner);
-        }
+    [HttpPost("{spinnerId}/dinners")]
+    public async Task<IActionResult> AddDinner([FromRoute] Guid spinnerId, [FromBody] AddDinner dinner)
+    {
+        _logger.LogInformation("AddDinner {@Dinner}", dinner);
+        var spinner = await _spinnerService.AddDinner(spinnerId, dinner.Name, dinner.Ingredients);
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody]CreateSpinner spinner)
-        {
-            _logger.LogInformation("Create {@Spinner}", spinner);
-            var result = await _spinnerService.Create(spinner);
+        return CreatedAtRoute("GetSpinner", new { id = spinnerId }, spinner);
+    }
 
-            return CreatedAtRoute("GetSpinner", new { id = result.Id }, result);
-        }
+    [HttpDelete("{spinnerId}/dinners/{dinnerId}")]
+    public async Task<Spinner> DeleteDinner(Guid spinnerId, Guid dinnerId)
+    {
+        var spinner = await _spinnerService.RemoveDinner(spinnerId, dinnerId);
 
-        [HttpPost("{spinnerId}/dinners")]
-        public async Task<IActionResult> AddDinner([FromRoute] Guid spinnerId, [FromBody] AddDinner dinner)
-        {
-            _logger.LogInformation("AddDinner {@Dinner}", dinner);
-            var spinner = await _spinnerService.AddDinner(spinnerId, dinner.Name, dinner.Ingredients);
+        return spinner;
+    }
 
-            return CreatedAtRoute("GetSpinner", new { id = spinnerId }, spinner);
-        }
+    [HttpDelete("{spinnerId}")]
+    public async Task<Spinner> DeleteSpinner(Guid spinnerId)
+    {
+        var spinner = await _spinnerService.Remove(spinnerId);
 
-        [HttpDelete("{spinnerId}/dinners/{dinnerId}")]
-        public async Task<Spinner> DeleteDinner(Guid spinnerId, Guid dinnerId)
-        {
-            var spinner = await _spinnerService.RemoveDinner(spinnerId, dinnerId);
-
-            return spinner;
-        }
-
-        [HttpDelete("{spinnerId}")]
-        public async Task<Spinner> DeleteSpinner(Guid spinnerId)
-        {
-            var spinner = await _spinnerService.Remove(spinnerId);
-
-            return spinner;
-        }
+        return spinner;
     }
 }

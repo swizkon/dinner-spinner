@@ -1,9 +1,9 @@
+using System;
 using DinnerSpinner.Infrastructure;
 using DinnerSpinner.Web.Configuration;
 using DinnerSpinner.Web.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -69,7 +69,10 @@ namespace DinnerSpinner.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            var runningInContainer = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
+
+            if (env.IsProduction() && runningInContainer?.ToLower() != "true")
+                app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
 
