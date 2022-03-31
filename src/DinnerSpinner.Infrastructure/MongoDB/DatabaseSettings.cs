@@ -1,4 +1,4 @@
-﻿namespace DinnerSpinner.Web.Configuration
+﻿namespace DinnerSpinner.Infrastructure.MongoDB
 {
     public class DatabaseSettings : IDatabaseSettings
     {

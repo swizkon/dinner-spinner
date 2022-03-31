@@ -1,4 +1,4 @@
-﻿namespace DinnerSpinner.Api.Domain.Contracts;
+﻿namespace DinnerSpinner.Domain.Contracts;
 
 public class CreateSpinner
 {

@@ -11,14 +11,40 @@
     });
   }
 
+  function toggleEdit() {
+
+    if (editMode && dinner.name != name) { 
+      
+      dispatch("renameDinner", {
+        dinnerId: dinner.id,
+        name: name,
+      });
+    }
+    
+    editMode = !editMode;
+  }
+
   onMount(async () => {
     console.log("dinner item", dinner);
+    name = dinner.name;
   });
 
   export let dinner;
+
+  let name;
+  let editMode = false
+  $: debug = " editmode: " + editMode;
 </script>
 
 <div>
-  <h2>{dinner.name}</h2>
+
+  {#if editMode}
+  <input on:blur={toggleEdit} bind:value={name} />
+  {:else}
+  <h2 on:click={toggleEdit}>{name}</h2>
+  {/if}
+  
+  <hr/>
   <button on:click={deleteMe}> Delete </button>
+  <em>{debug}</em>
 </div>

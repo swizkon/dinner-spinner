@@ -1,7 +1,8 @@
 using System;
-using DinnerSpinner.Infrastructure;
+using DinnerSpinner.Domain.DomainServices;
+using DinnerSpinner.Domain.Repositories;
+using DinnerSpinner.Infrastructure.MongoDB;
 using DinnerSpinner.Web.Configuration;
-using DinnerSpinner.Web.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,8 +12,6 @@ using Microsoft.Extensions.Options;
 
 namespace DinnerSpinner.Api
 {
-    using Configuration;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -32,7 +31,9 @@ namespace DinnerSpinner.Api
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton<SpinnerService>();
+            services.AddScoped<ISpinnerRepository, MongoDbSpinnerRepository>();
+
+            services.AddScoped<SpinnerService>();
 
             services.AddMongoDbConfiguration();
 

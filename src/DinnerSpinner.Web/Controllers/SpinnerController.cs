@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DinnerSpinner.Api.Domain.Contracts;
+using DinnerSpinner.Domain.Contracts;
+using DinnerSpinner.Domain.DomainServices;
 using DinnerSpinner.Domain.Model;
-using DinnerSpinner.Web.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,7 +23,7 @@ public class SpinnerController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<Spinner>> Get() => await _spinnerService.Get();
+    public async Task<IList<Spinner>> Get() => await _spinnerService.GetAll();
 
     [HttpGet("{id}", Name = "GetSpinner")]
     public async Task<IActionResult> Get(Guid id)
@@ -54,6 +54,15 @@ public class SpinnerController : ControllerBase
         var spinner = await _spinnerService.AddDinner(spinnerId, dinner.Name, dinner.Ingredients);
 
         return CreatedAtRoute("GetSpinner", new { id = spinnerId }, spinner);
+    }
+
+    [HttpPatch("{spinnerId:guid}/dinners/{dinnerId:guid}")]
+    public async Task<IActionResult> AddDinner([FromRoute] Guid spinnerId, Guid dinnerId, [FromBody] UpdateDinner dinner)
+    {
+        _logger.LogInformation("Path Dinner {@Dinner}", dinner);
+        var spinner = await _spinnerService.UpdateDinner(spinnerId, dinnerId, dinner.Name);
+
+        return Ok(spinner);
     }
 
     [HttpDelete("{spinnerId}/dinners/{dinnerId}")]

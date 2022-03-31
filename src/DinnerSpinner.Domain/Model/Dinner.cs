@@ -13,7 +13,7 @@ public class Dinner
 
     public ICollection<Ingredient> Ingredients { get; set; }
 
-    public SpinnerRef SpinnerRef { get; set; }
+    //public SpinnerRef SpinnerRef { get; set; }
 
     /*
      *Étapes de préparation

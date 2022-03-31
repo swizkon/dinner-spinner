@@ -20,8 +20,25 @@
   });
 
   function handleAppend(event) {
-    console.log("event", event);
     spinner = event.detail.spinner;
+  }
+  
+  function handleRename(event) {
+    console.log("handleRename", event);
+    
+    const payload = {
+      name: event.detail.name
+    };
+
+    return fetch(`/api/spinner/${id}/dinners/${event.detail.dinnerId}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+      headers: { "content-type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((d) => {
+        spinner = d;
+      });
   }
 
   function handleDelete(event) {
@@ -48,7 +65,7 @@
   <hr />
 
   {#each dinners as dinner}
-    <DinnerItem {dinner} on:delete={handleDelete} />
+    <DinnerItem {dinner} on:renameDinner={handleRename} on:delete={handleDelete} />
   {/each}
 
   <hr />

@@ -39,7 +39,7 @@
 </script>
 
 <main>
-  <h1>Hello {name}!</h1>
+  <h2>Hello {name}!</h2>
 
   <Router {url}>
     <nav>
@@ -49,7 +49,6 @@
       <Route path="spinner/:id" let:params>
         <SpinnerDetails id={params.id} />
       </Route>
-      <!-- <Route path="spinner/:id" component={SpinnerDetails} /> -->
       <Route path="/" component={SpinnerList} />
     </div>
   </Router>

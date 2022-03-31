@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace DinnerSpinner.Api.Configuration
+namespace DinnerSpinner.Web.Configuration
 {
     public static class SwaggerConfiguration
     {

@@ -1,31 +1,55 @@
-
-/*
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DinnerSpinner.Domain.Contracts;
 using DinnerSpinner.Domain.Model;
-using DinnerSpinner.Infrastructure.MongoDB;
+using DinnerSpinner.Domain.Repositories;
 using MongoDB.Driver;
 
-namespace DinnerSpinner.Web.Domain.Services;
+namespace DinnerSpinner.Infrastructure.MongoDB;
 
-public class SpinnerService
+public class MongoDbSpinnerRepository : ISpinnerRepository
 {
     private readonly IMongoDatabase _database;
     private readonly IMongoCollection<Spinner> _spinners;
     private readonly IMongoCollection<User> _users;
 
-    public SpinnerService(IDatabaseSettings settings)
+    public MongoDbSpinnerRepository(IDatabaseSettings settings)
     {
         _database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
         _spinners = _database.GetCollection<Spinner>(nameof(Spinner));
     }
 
-    public async Task< List<Spinner>> Get()
+    public async Task<IList<Spinner>> GetAll()
         => await _spinners.Find(spinner => true).ToListAsync();
 
-    public async Task<Spinner> Get(Guid id) 
+    public async Task<Spinner> GetById(Guid id)
         => await _spinners.Find<Spinner>(spinner => spinner.Id == id).FirstOrDefaultAsync();
 
+    public async Task Save(Spinner s)
+    {
+        using var session = await _database.Client.StartSessionAsync();
+        var replace = await _spinners.ReplaceOneAsync(session, spinner => spinner.Id == s.Id, s);
+        
+        if (replace.ModifiedCount == 0)
+            await _spinners.InsertOneAsync(session, s);
+    }
+    public async Task<Spinner> RemoveById(Guid id)
+    {
+        var spinner = await GetById(id);
+        if ((await _spinners.DeleteOneAsync(s => s.Id == id)).IsAcknowledged)
+        {
+            return spinner;
+        }
+
+        return default;
+    }
+}
+
+/*
+public class SpinnerService
+{
     public async Task<Spinner> Create(CreateSpinner createSpinner)
     {
         using var session = await _database.Client.StartSessionAsync();
@@ -58,12 +82,12 @@ public class SpinnerService
         }
     }
 
-    public Task UpdateAsync(Guid id, Spinner spinnerIn)
-    {
-        // spinnerIn.Version
-        // Do a concurrency check?
-        return _spinners.ReplaceOneAsync(spinner => spinner.Id == id, spinnerIn);
-    }
+    //public Task UpdateAsync(Guid id, Spinner spinnerIn)
+    //{
+    //    // spinnerIn.Version
+    //    // Do a concurrency check?
+    //    return _spinners.ReplaceOneAsync(spinner => spinner.Id == id, spinnerIn);
+    //}
 
     public async Task<Spinner> Remove(Guid id)
     {
@@ -75,39 +99,6 @@ public class SpinnerService
 
         return default;
     }
-
-    public async Task<Spinner> AddDinner(Guid spinnerId, string name, List<string> ingredients)
-    {
-        var spinner = await Get(spinnerId);
-
-        var dinner = new Dinner
-        {
-            Name = name,
-            Id = Guid.NewGuid(),
-            Ingredients = ingredients.Select(i => new Ingredient(i)).ToList(),
-            SpinnerRef = new SpinnerRef
-            {
-                Id = spinner.Id,
-                Name = spinner.Name
-            }
-        };
-
-        spinner.Dinners.Add(dinner);
-
-        await UpdateAsync(spinner.Id, spinner);
-
-        return spinner;
-    }
-
-    public async Task<Spinner> RemoveDinner(Guid spinnerId, Guid dinnerId)
-    {
-        var spinner = await Get(spinnerId);
-
-        spinner.Dinners = spinner.Dinners.Where(d => d.Id != dinnerId).ToList();
-
-        await UpdateAsync(spinner.Id, spinner);
-
-        return spinner;
-    }
+    
 }
 */

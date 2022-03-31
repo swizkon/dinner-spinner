@@ -1,12 +1,12 @@
-﻿using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Bson.Serialization;
-using DinnerSpinner.Domain.Model;
+﻿using DinnerSpinner.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace DinnerSpinner.Infrastructure
+namespace DinnerSpinner.Infrastructure.MongoDB
 {
     public static class MongoDbConfiguration
     {

@@ -1,35 +1,30 @@
-
-/*
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DinnerSpinner.Domain.Contracts;
 using DinnerSpinner.Domain.Model;
-using DinnerSpinner.Infrastructure.MongoDB;
-using MongoDB.Driver;
+using DinnerSpinner.Domain.Repositories;
 
-namespace DinnerSpinner.Web.Domain.Services;
+namespace DinnerSpinner.Domain.DomainServices;
 
 public class SpinnerService
 {
-    private readonly IMongoDatabase _database;
-    private readonly IMongoCollection<Spinner> _spinners;
-    private readonly IMongoCollection<User> _users;
+    private readonly ISpinnerRepository _repository;
 
-    public SpinnerService(IDatabaseSettings settings)
+    public SpinnerService(ISpinnerRepository repository)
     {
-        _database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-        _spinners = _database.GetCollection<Spinner>(nameof(Spinner));
+        _repository = repository;
     }
 
-    public async Task< List<Spinner>> Get()
-        => await _spinners.Find(spinner => true).ToListAsync();
+    public async Task<IList<Spinner>> Get()
+        => await _repository.GetAll();
 
-    public async Task<Spinner> Get(Guid id) 
-        => await _spinners.Find<Spinner>(spinner => spinner.Id == id).FirstOrDefaultAsync();
+    public async Task<Spinner> Get(Guid id)
+        => await _repository.GetById(id);
 
     public async Task<Spinner> Create(CreateSpinner createSpinner)
     {
-        using var session = await _database.Client.StartSessionAsync();
-
         try
         {
             var spinner = new Spinner
@@ -47,7 +42,7 @@ public class SpinnerService
                 }
             };
 
-            await _spinners.InsertOneAsync(session, spinner);
+            await _repository.Save(spinner);
 
             return spinner;
         }
@@ -58,22 +53,14 @@ public class SpinnerService
         }
     }
 
-    public Task UpdateAsync(Guid id, Spinner spinnerIn)
+    public async Task UpdateAsync(Guid id, Spinner spinnerIn)
     {
-        // spinnerIn.Version
-        // Do a concurrency check?
-        return _spinners.ReplaceOneAsync(spinner => spinner.Id == id, spinnerIn);
+        await _repository.Save(spinnerIn);
     }
 
     public async Task<Spinner> Remove(Guid id)
     {
-        var spinner = await Get(id);
-        if ((await _spinners.DeleteOneAsync(s => s.Id == id)).IsAcknowledged)
-        {
-            return spinner;
-        }
-
-        return default;
+        return await _repository.RemoveById(id);
     }
 
     public async Task<Spinner> AddDinner(Guid spinnerId, string name, List<string> ingredients)
@@ -85,14 +72,27 @@ public class SpinnerService
             Name = name,
             Id = Guid.NewGuid(),
             Ingredients = ingredients.Select(i => new Ingredient(i)).ToList(),
-            SpinnerRef = new SpinnerRef
-            {
-                Id = spinner.Id,
-                Name = spinner.Name
-            }
+            //SpinnerRef = new SpinnerRef
+            //{
+            //    Id = spinner.Id,
+            //    Name = spinner.Name
+            //}
         };
 
         spinner.Dinners.Add(dinner);
+
+        await UpdateAsync(spinner.Id, spinner);
+
+        return spinner;
+    }
+
+    public async Task<Spinner> UpdateDinner(Guid spinnerId, Guid dinnerId, string name)
+    {
+        var spinner = await Get(spinnerId);
+
+        var dinner = spinner.Dinners.FirstOrDefault(d => d.Id == dinnerId);
+        if(dinner != null)
+            dinner.Name = name;
 
         await UpdateAsync(spinner.Id, spinner);
 
@@ -109,5 +109,7 @@ public class SpinnerService
 
         return spinner;
     }
+
+    public async Task<IList<Spinner>> GetAll()
+        => await _repository.GetAll().ConfigureAwait(false);
 }
-*/

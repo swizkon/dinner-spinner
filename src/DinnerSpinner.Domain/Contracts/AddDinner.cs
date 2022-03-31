@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DinnerSpinner.Api.Domain.Contracts;
+namespace DinnerSpinner.Domain.Contracts;
 
 public class AddDinner
 {
